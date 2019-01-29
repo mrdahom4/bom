@@ -27,8 +27,7 @@ client.on('ready', () => {
 });
 
 client.on("message", message => {
-    if (message.content.startsWith("&bc")) {
-                 if (!message.member.hasPermission("ADMINISTRATOR"))  return;
+    if (message.content.startsWith("&bc")) {             
   let args = message.content.split(" ").slice(1);
   var argresult = args.join(' ');
   message.guild.members.filter(m => m.presence.status !== 'all').forEach(m => {
