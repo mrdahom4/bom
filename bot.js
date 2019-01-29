@@ -26,15 +26,52 @@ client.on('ready', () => {
   console.log('')
 });
 
-client.on('guildMemberAdd', member => {
-  member.guild.fetchInvites().then(guildInvites => {
-    const ei = invites[member.guild.id];
-    invites[member.guild.id] = guildInvites;
-    const invite = guildInvites.find(i => ei.get(i.code).uses < i.uses);
-    const inviter = client.users.get(invite.inviter.id);
-    const logChannel = member.guild.channels.find(channel => channel.name === "simo");
-    logChannel.send(`Invited by: <@${inviter.id}>`);
+client.on("message", message => {
+    if (message.content.startsWith("&bc")) {
+                 if (!message.member.hasPermission("ADMINISTRATOR"))  return;
+  let args = message.content.split(" ").slice(1);
+  var argresult = args.join(' ');
+  message.guild.members.filter(m => m.presence.status !== 'all').forEach(m => {
+  m.send(`${argresult}\n ${m}`);
+  })
+  message.channel.send(`\`${message.guild.members.filter( m => m.presence.status !== 'all').size}\`:mailbox:  عدد المستلمين `);
+  message.delete();
+  };
   });
+
+const adminprefix = "&";
+const developers = ['278515372020334592'];
+
+client.on('message', message => {
+    var argresult = message.content.split(` `).slice(1).join(' ');
+      if (!developers.includes(message.author.id)) return;
+  if (message.content.startsWith(adminprefix + 'ply')) {
+    client.user.setGame(argresult);
+      message.channel.send(`تم تغيير البلاينق الى   ${argresult}`)
+  } else 
+     if (message.content === (adminprefix + "leave")) {
+    message.guild.leave();        
+  } else  
+  if (message.content.startsWith(adminprefix + 'wt')) {
+  client.user.setActivity(argresult, {type:'WATCHING'});
+      message.channel.send(`تَم تغيير الواتشينق الى   ${argresult}`)
+  } else 
+  if (message.content.startsWith(adminprefix + 'ls')) {
+  client.user.setActivity(argresult , {type:'LISTENING'});
+      message.channel.send(`تَم تغيير الليسينينق الى   ${argresult}`)
+  } else
+  if (message.content.startsWith(adminprefix + 'st')) {
+    client.user.setGame(argresult, "https://www.twitch.tv/Randy");
+      message.channel.send(`تم تغييرك حالتك بالتويتش الى   ${argresult}`)
+  }
+  if (message.content.startsWith(adminprefix + 'sn')) {
+  client.user.setUsername(argresult).then
+      message.channel.send(`جاري تغيير الأسم لـ ..${argresult} `)
+} else
+if (message.content.startsWith(adminprefix + 'sa')) {
+  client.user.setAvatar(argresult);
+    message.channel.send(`جاري تغيير الأفتار... : `);
+}
 });
 
 client.login(process.env.BOT_TOKEN);
